@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Articles</h1>
+    <a href="{% url 'articles:article_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nouvel article
+    </a>
+</div>
+
+<div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4>Catégories</h4>
+        <a href="{% url 'articles:category_add' %}" class="btn btn-sm btn-outline-success">
+            <i class="bi bi-plus"></i> Ajouter une catégorie
+        </a>
+    </div>
+
+    <div class="btn-group mt-2">
+        <a href="?" class="btn btn-outline-secondary">Tous</a>
+        {% for cat in categories %}
+            <a href="?category={{ cat.id }}" class="btn btn-outline-secondary">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+{% for article in articles %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{% url 'articles:article_detail' article.pk %}">{{ article.title }}</a>
+            {% if article.category %}
+                <span class="badge bg-secondary float-end">{{ article.category.name }}</span>
+            {% endif %}
+        </h5>
+        <p class="card-text text-muted">
+            Par {{ article.author.username }} | {{ article.created_at|date:"d/m/Y H:i" }}
+            <span class="float-end">👁️ {{ article.views }} vues</span>
+        </p>
+    </div>
+</div>
+{% empty %}
+<div class="alert alert-info">Aucun article disponible.</div>
+{% endfor %}
+{% endblock  %}

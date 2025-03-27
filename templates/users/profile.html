@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                  {% if user.profile.profile_picture %}
+                    <img src="{{ user.profile.profile_picture.url }}"
+                         class="card-img-top rounded-circle"
+                         alt="Profile picture"
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <img src="/media/profile_pics/default.png"
+                         class="card-img-top rounded-circle"
+                         alt="Default profile picture"
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.user.username }}</h5>
+                    <p class="card-text">{{ profile.bio }}</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Location: {{ profile.location }}</li>
+                        <li class="list-group-item">Birth Date: {{ profile.birth_date }}</li>
+                    </ul>
+                    <a href="{% url 'users:profile_edit' %}" class="btn btn-primary mt-3">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

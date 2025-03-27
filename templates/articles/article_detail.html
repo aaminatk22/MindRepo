@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="article-container">
+    <!-- Article Header -->
+    <h1 class="article-title">{{ article.title }}</h1>
+    <div class="article-meta text-muted mb-4">
+        <span class="me-3"><i class="bi bi-person"></i> {{ article.author }}</span>
+        <span class="me-3"><i class="bi bi-calendar"></i> {{ article.created_at|date:"F d, Y" }}</span>
+        <span class="me-3"><i class="bi bi-tag"></i> {{ article.category.name|default:"Non classé" }}</span>
+        <span><i class="bi bi-eye"></i> {{ article.views }} vues</span>
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-content mb-5">
+        {{ article.content|linebreaks }}
+    </div>
+
+    <!-- Article Actions -->
+    {% if request.user == article.author %}
+    <div class="article-actions mb-5">
+        <a href="{% url 'articles:article_update' article.pk %}" class="btn btn-outline-secondary">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+        <a href="{% url 'articles:article_delete' article.pk %}" class="btn btn-outline-danger ms-2">
+            <i class="bi bi-trash"></i> Supprimer
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Comment Section -->
+    <div class="comments-section mt-5 border-top pt-4">
+        <h3 class="mb-4">
+            <i class="bi bi-chat-left-text"></i> Commentaires ({{ article.comments.count }})
+        </h3>
+
+        <!-- Comment Form -->
+        {% if user.is_authenticated %}
+        <div class="comment-form card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Ajouter un commentaire</h5>
+                <form method="post" action="{% url 'comments:add_comment' article.pk %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ comment_form.content }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-send"></i> Publier
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <a href="{% url 'login' %}?next={% url 'article_detail' article.pk %}" class="alert-link">
+                Connectez-vous
+            </a> pour laisser un commentaire
+        </div>
+        {% endif %}
+
+        <!-- Comments List -->
+        <div class="comments-list">
+            {% for comment in article.comments.all %}
+            <div class="comment card mb-3" id="comment-{{ comment.id }}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">
+                                <i class="bi bi-person-circle"></i> {{ comment.author.username }}
+                            </h5>
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> {{ comment.created_at|date:"d/m/Y H:i" }}
+                                {% if comment.created_at != comment.updated_at %}
+                                (modifié)
+                                {% endif %}
+                            </small>
+                        </div>
+                        {% if user == comment.author %}
+                        <a href="{% url 'comments:delete_comment' comment.pk %}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <p class="card-text mt-3">{{ comment.content }}</p>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-secondary">
+                Aucun commentaire pour l'instant. Soyez le premier à commenter !
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .article-meta i {
+        margin-right: 5px;
+    }
+    .article-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    textarea.form-control {
+        min-height: 100px;
+    }
+</style>
+{% endblock %}
