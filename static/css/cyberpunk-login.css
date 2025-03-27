@@ -1,0 +1,156 @@
+/* Base Styles */
+.login-container {
+        margin: 0;
+    padding: 0;
+    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #0a0a12;
+}
+
+.cyberpunk-form {
+  font-family: 'Courier New', monospace;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+/* Input Container - Glitch Effect */
+.input-container {
+  filter: drop-shadow(0 0 10px #4090b5)
+          drop-shadow(0 0 20px #9e30a9);
+  animation: pulse-glow 4s ease-in-out infinite alternate;
+}
+
+.input-content {
+  position: relative;
+  padding: 1.5em;
+  background: rgba(20, 20, 30, 0.8);
+  clip-path: polygon(
+    0% 15%,
+    15% 0%,
+    85% 0%,
+    100% 15%,
+    100% 85%,
+    85% 100%,
+    15% 100%,
+    0% 85%
+  );
+}
+
+.input-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    #4090b5 50%,
+    transparent 55%
+  );
+  background-size: 200% 200%;
+  animation: scanline 6s linear infinite;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Input Fields */
+.input-is {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #4090b5;
+  color: #00ffff;
+  padding: 0.8em 0.5em;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.input-is:focus {
+  outline: none;
+  border-bottom-color: #ff00ff;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.input-is::placeholder {
+  color: rgba(100, 255, 255, 0.6);
+  font-style: italic;
+}
+
+/* Submit Button */
+.submit-button {
+  background: transparent;
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  padding: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  clip-path: polygon(
+    10% 0%,
+    90% 0%,
+    100% 50%,
+    90% 100%,
+    10% 100%,
+    0% 50%
+  );
+}
+
+.submit-button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+/* Link Styles */
+.cyberlink {
+  color: #ff00ff;
+  text-decoration: none;
+  position: relative;
+}
+
+.cyberlink:hover {
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.cyberlink::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ff00ff;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.cyberlink:hover::after {
+  transform: scaleX(1);
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0% {
+    filter: drop-shadow(0 0 5px #4090b5)
+            drop-shadow(0 0 10px #9e30a9);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px #4090b5)
+            drop-shadow(0 0 30px #9e30a9);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}

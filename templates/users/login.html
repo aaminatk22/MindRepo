@@ -1,21 +1,53 @@
 {% extends 'base.html' %}
-{% load crispy_forms_filters %}
-{% load crispy_forms_tags %}
+{% load static %}
 
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h2>Connexion</h2>
-            <form method="POST">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-primary">Se connecter</button>
-            </form>
-            <div class="mt-3">
-                <small>Pas encore de compte? <a href="{% url 'users:register' %}">Inscrivez-vous</a></small>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cyberpunk-login.css' %}">
+<style>
+    /* Additional fixes for the login page */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: auto;
+    }
+</style>
+{% endblock %}
+
+{% block full_width_content %}
+<div class="login-wrapper">
+  <div class="login-container">
+    <form class="cyberpunk-form" method="POST">
+      {% csrf_token %}
+      <div class="input-container">
+        <div class="input-content">
+          <div class="input-dist">
+            <div class="input-type">
+              <input
+                class="input-is"
+                type="text"
+                name="username"
+                required
+                placeholder="Username"
+                id="id_username"
+              >
+              <input
+                class="input-is"
+                type="password"
+                name="password"
+                required
+                placeholder="Password"
+                id="id_password"
+              >
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+      <button type="submit" class="submit-button">LOG IN</button>
+      <div class="form-footer">
+        <small>No account? <a href="{% url 'users:register' %}" class="cyberlink">SIGN UP</a></small>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
